@@ -41,7 +41,7 @@ Not for an episode whose assets are already out and now point at the wrong cut. 
 
    After each write, read the new head with `editing_get_revision`, set `revision` in `canonical.md`, and add a History row naming the change ("pauses over 1500 ms removed"). If a write is rejected for a stale revision, STOP: someone else changed the cut. Show `editing_compare_revisions` from your revision to the head and ask what to keep. `editing_restore_audio_cleanup` undoes a pause or filler pass.
 
-   When the tighten is done, summarise it with `editing_compare_revisions` from the declared revision to the head: runtime before and after, and cuts grouped by `feature`. Flag it if more than about 10% of the runtime went. Riverside's own editing guide calls 5–10% the safer range for a conversation.
+   When the tighten is done, summarize it with `editing_compare_revisions` from the declared revision to the head: runtime before and after, and cuts grouped by `feature`. Flag it if more than about 10% of the runtime went. Riverside's own editing guide calls 5–10% the safer range for a conversation.
 
 ### Phase 3: build the package (drafts only)
 
@@ -55,7 +55,7 @@ Not for an episode whose assets are already out and now point at the wrong cut. 
 
 ### Phase 4: ship (only after explicit approval)
 
-11. **Export.** Run `../riverside-skills/scripts/stale-check SLUG`. If it exits non-zero, STOP: an asset was built from a different cut. List the rows and fix them before rendering. Check that `editing_get_revision` still equals `canonical.md`; if it moved, STOP and ask. Confirm the render settings with the user (`MP3` or `WAV` for the feed, `1080p` for YouTube) and say that every call renders again. Call `exports_create_export` with `rstlRevisionId` set to the canonical revision. The repo's `ask` rule also prompts for this tool, and this confirmation comes first either way. Poll `exports_get_export` until `COMPLETED` and check the revision it pinned. There is no download link: the file lands in the Riverside exports folder.
+11. **Export.** Run `../riverside-skills/scripts/stale-check SLUG`. If it exits non-zero, STOP: an asset was built from a different cut. List the rows and fix them before rendering. Check that `editing_get_revision` still equals `canonical.md`. If it changed, STOP and ask. Confirm the render settings with the user (`MP3` or `WAV` for the feed, `1080p` for YouTube) and say that every call renders again. Call `exports_create_export` with `rstlRevisionId` set to the canonical revision. The repo's `ask` rule also prompts for this tool, and this confirmation comes first either way. Poll `exports_get_export` until `COMPLETED` and check the revision it pinned. There is no download link: the file lands in the Riverside exports folder.
 12. **Host.** Hand off to `podcast-host-and-rss`: download, loudness, tags, upload, RSS metadata, and the host episode id logged.
 13. **YouTube and socials.** Call `editing_get_export_publish_data` on the canonical edit. If any `youtubeCode` is non-null, STOP: name the flagged media and let the user choose between replacing it (a change to the cut, so update `canonical.md` and re-run stale-check) and publishing with a likely claim. Re-check `editing_get_revision` against `canonical.md`, because `social_upload_create` publishes the edit as it stands and takes no revision. Then hand off to `distribution-and-scheduling`, which owns the final summary, the explicit yes, and the `social_get_upload_status` check (once shortly after, then when the user asks). This skill never calls `social_upload_create`.
 14. **Close the log.** Every asset has a row in `publish-log.md`: `built_from`, destination, reference (export id, host episode id, uploadId or file path) and state. Run `stale-check SLUG` once more. Report the episode done only when it exits 0.
@@ -69,7 +69,7 @@ Not for an episode whose assets are already out and now point at the wrong cut. 
 | 5 | `editing_remove_pauses` · `editing_remove_fillers` · `editing_restore_audio_cleanup` | Pass `expectedRevision` on every write |
 | 5 | `editing_read_aligned_transcript` · `editing_resolve_transcript_selection` · `editing_cut_time_ranges` | Playable milliseconds. Run the payload only when `readyToApply` is true |
 | 5 | `media_create_media_upload` · `media_finalize_media_upload` · `media_get_media` · `editing_insert_media_as_scene` | Up to 500 MB: MP4, WEBM, MPEG, WAV, MP3, OGG, JPG, PNG. A scene lengthens the timeline |
-| 5 | `editing_compare_revisions` | The tighten summary, and what moved when a write is rejected |
+| 5 | `editing_compare_revisions` | The tighten summary, and what changed when a write is rejected |
 | 11 | `exports_create_export` · `exports_get_export` | Behind the `ask` rule. Calling twice renders twice. Returns an S3 key, not a link |
 | 13 | `editing_get_export_publish_data` | A non-null `youtubeCode` is a likely Content ID match |
 
@@ -80,7 +80,7 @@ Not for an episode whose assets are already out and now point at the wrong cut. 
 
 ## Rules & quality bar
 - **Canonical first.** Step 3 fills `canonical.md` before any edit, cut or draft
-- **The scripts decide.** Clearance and staleness come from `clearance-check` and `stale-check` exit codes, never from judgement
+- **The scripts decide.** Clearance and staleness come from `clearance-check` and `stale-check` exit codes, never from judgment
 - **The package is the default stop.** Export, hosting and publishing need explicit approval in this conversation
 - **Every write passes `expectedRevision`,** and every intentional change to the cut gets a History row
 - **No fabrication.** Every quote carries recording name and canonical timestamp. A number the guest said aloud is flagged "confirm with customer" (the pack's one flag for guests and customers alike) until confirmed in writing

@@ -19,7 +19,7 @@ verified quotes, flagged numbers, the log).
 ## Inputs
 - **Before:** the customer company, the interviewee's name and role, the result the team hopes to
   show, and what the account team knows about the before-state
-- **After:** the interview recording in Riverside; its folder `workspace/episodes/SLUG/`; the
+- **After:** the interview recording in Riverside, its folder `workspace/episodes/SLUG/`, and the
   customer's written approval saved into that folder and recorded in `clearance.md`
 - **Workspace:** `./workspace`, or `RIVERSIDE_WORKSPACE` if set
 
@@ -37,7 +37,7 @@ verified quotes, flagged numbers, the log).
    3. Why that failed: "Where did that break down, and what did it cost you?"
    4. The decision: "What made you look, why then, and who else did you consider?"
    5. What changed: "What is different in a normal week now?"
-   6. The result: "What moved, and how do you measure it?"
+   6. The result: "What improved, and how do you measure it?"
    7. What they'd tell a peer: "If someone in your role asked about us, what would you say?"
 
    Coach the interviewer on three habits. Ask for full-sentence answers that restate the
@@ -81,7 +81,7 @@ verified quotes, flagged numbers, the log).
 3. **Check the cut is current.** Run `../riverside-skills/scripts/stale-check SLUG`. Exit 2:
    STOP, the canonical cut is not declared. Exit 1: assets from an older cut are logged. List them
    and ask whether this run replaces them. Then call `editing_get_revision` on the edit. If it
-   differs from `canonical.md`, the edit moved after it was declared: STOP and ask whether to
+   differs from `canonical.md`, the edit changed after it was declared: STOP and ask whether to
    re-declare it, with a History row.
 4. **Read the transcript on the canonical timeline.** `editing_read_aligned_transcript` on the
    canonical edit and revision, paged with `startMs` and `endMs` for a long interview. Save it to
@@ -117,7 +117,7 @@ verified quotes, flagged numbers, the log).
     each was honored. Add a row per asset to `publish-log.md`: case study draft, pull-quotes, clip
     shortlist. `built_from` is `edit_id@revision` from `canonical.md`, `reference` is the file
     path, `state` is `draft`. The log has no clearance column, so the asset cell carries it:
-    `case study draft (cleared public DATE; restrictions: first name only)`.
+    `case study draft (cleared public DATE, restrictions: first name only)`.
 11. **Send it back to the customer.** Draft `assets/review-request.md`: the case study, with every
     flagged number listed for them to confirm. Nothing is final until they reply in writing.
 

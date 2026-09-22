@@ -51,7 +51,7 @@ Each gate passes or fails. Any FAIL makes the verdict REVISE with no score. Run 
 If any gate failed, skip to step 5.
 
 ### 3. Score it
-Score each dimension 1–5 against the anchors. PASS needs every dimension at 4 or 5. A dimension at 3 or below becomes a fix that says what would move it to 5. Title options and clip candidates are scored one at a time. Clip points, chapter marks and thumbnail frames are read on the canonical edit's playable timeline (`editing_read_aligned_transcript` on the `edit_id` in `canonical.md`), never raw recording time, because cuts shift time.
+Score each dimension 1–5 against the anchors. PASS needs every dimension at 4 or 5. A dimension at 3 or below becomes a fix that says what would raise it to 5. Title options and clip candidates are scored one at a time. Clip points, chapter marks and thumbnail frames are read on the canonical edit's playable timeline (`editing_read_aligned_transcript` on the `edit_id` in `canonical.md`), never raw recording time, because cuts shift time.
 
 | Clip | A 1 looks like | A 5 looks like |
 |---|---|---|
@@ -137,7 +137,7 @@ After the fixes, run the whole review again from step 2 as a new cycle, because 
 - **Judge only.** No rewrites, no quick fixes. The fix list goes back to the skill that made the asset
 - **Scripts decide clearance and staleness.** The model never overrides an exit code
 - **A gate FAIL means no score.** A strong clip with an unverified quote is REVISE
-- **Ask, never guess:** who speaks, whether it is sponsored, whether the transcript misheard
+- **Ask the user**, and never guess, about who speaks, whether it is sponsored, and whether the transcript misheard
 - **Label the review mode honestly.** Same-context when it was
 - **Read-only on Riverside.** No publishing, no edits, no share links
 - **Three cycles, then the user**

@@ -30,7 +30,7 @@ Each time a task gets done by hand, add the date to its line in the tally:
 weekly win-loss summary | 2026-08-04, 2026-08-18, 2026-09-01
 ```
 
-On the third date, ask: "This is the third time. Want it as a skill?" Not sooner. One run shows a procedure. Three show which steps actually repeat and which were one-offs. If the user says no, write `declined` on the line and stop asking.
+On the third date, ask: "This is the third time. Want it as a skill?" Not sooner. One run shows a procedure. Three show which steps repeat and which were one-offs. If the user says no, write `declined` on the line and stop asking.
 
 ### 2. Declare the intent before the task starts
 The declaration comes first, before any work: "We are doing TASK by hand this session, and the session ends with a skill for it." From then on, keep a capture list as you go: every step, every input and where it came from, every decision with the reason given, every correction the user made. Reconstructing afterwards keeps the steps and loses the decisions, and the decisions are the part worth encoding.
@@ -40,13 +40,13 @@ At the end, the draft skill accounts for every item on the capture list. Each it
 ### 3. Or record it once in Riverside
 When explaining the task would take longer than doing it, do it once on a Riverside recording with screen share on, narrating as you go.
 - **Say everything out loud.** Only speech is transcribed, never the screen. Say the file names, field names, thresholds, what you check and why. A click you do not narrate does not exist for the skill
-- **Say roles, not names:** "the customer's CFO". Anything named on the recording lands in the transcript
+- **Refer to people by role**, such as "the customer's CFO". Anything named on the recording lands in the transcript
 - Find the recording with `platform_list_recordings`, newest first. Read it with `platform_get_transcript`, passing the recording id as `sessionId` for a single-take recording
 - Extract, each with its transcript timestamp in your working notes: the steps in order, every decision ("if", "unless", "I check X first"), every reason ("because", "otherwise"), every input named, and every place you said it breaks
-- Where the transcript skips a step, list the gaps and ask. Never fill one with a guess
+- Where the transcript skips a step, list the missing steps and ask. Never fill one with a guess
 
 ### 4. Write the skill
-**Point at knowledge files, never carry copies.** The skill says "Read PATH before drafting." It never pastes the voice guide, the ICP or the brand rules into its body. A pasted copy goes stale the day the original changes, and nothing tells you which skills still hold the old version. Check before saving: take two distinctive sentences from each knowledge file and run `grep -F "SENTENCE" SKILL.md`. Any hit is a copy. Replace it with the path.
+**Point at knowledge files by path.** The skill says "Read PATH before drafting." It never pastes the voice guide, the ICP or the brand rules into its body. A pasted copy goes stale the day the original changes, and nothing tells you which skills still hold the old version. Check before saving: take two distinctive sentences from each knowledge file and run `grep -F "SENTENCE" SKILL.md`. Any hit is a copy. Replace it with the path.
 
 **Scrub names.** List every person and company named in the transcript or the session, and grep the draft for each. Replace every client, customer or colleague name with a role.
 
@@ -55,9 +55,9 @@ When explaining the task would take longer than doing it, do it once on a Rivers
 Frontmatter rules for any new skill:
 - `name` equals the folder name. Lowercase and hyphens
 - `description` is a folded block scalar, `description: >-`, so quotation marks and colons inside it cannot break the YAML
-- The description opens with trigger words: the phrases a user actually types
+- The description opens with trigger words: the phrases a user types
 - It names the literal operations the skill runs, such as `platform_get_transcript` or a script name, so a request that names the operation finds the skill
-- It ends with a short boundary naming the sibling skill that owns the neighbouring job. This repo holds descriptions to 150–250 characters, which forces the trigger words to the front
+- It ends with a short boundary naming the sibling skill that owns the neighboring job. This repo holds descriptions to 150–250 characters, which forces the trigger words to the front
 
 Template:
 
@@ -65,7 +65,7 @@ Template:
 ---
 name: SKILL-NAME
 description: >-
-  Use for "TRIGGER PHRASE", "SECOND PHRASE". Does WHAT, using OPERATION. Not for NEIGHBOURING JOB: SIBLING-SKILL.
+  Use for "TRIGGER PHRASE", "SECOND PHRASE". Does WHAT, using OPERATION. Not for NEIGHBORING JOB: SIBLING-SKILL.
 ---
 
 # Skill Title
@@ -115,13 +115,13 @@ If the fix belongs in a knowledge file instead (the voice guide was wrong, not t
 - A new skill at `SKILL_DIR/SKILL.md`, committed
 - The tally at `workspace/skill-candidates.md`
 - For a correction: the edit, its commit, and the `LANDED` line from `skill-landed` shown in the chat
-- Prints the capture list against the draft, with each gap asked as a question
+- Prints the capture list against the draft, with each missing step asked as a question
 
 ## Rules & quality bar
-- **The third time, not the first.** Two runs cannot show which steps are stable
-- **Declare before the task, not after.** Decisions are lost in reconstruction
+- **Wait for the third time.** Two runs cannot show which steps are stable
+- **Declare before the task starts.** Decisions are lost in reconstruction
 - **The transcript and the session are the only sources.** No step, threshold or reason neither of them contains
-- **Point at knowledge files, never copy them**
+- **Knowledge files by path only**
 - **Done means exit 0.** "I updated the skill" is a claim. `skill-landed` is the proof
 - **Fixes go into workflow steps,** with a STOP branch when they are gates
 - **No client, customer or colleague names in a skill file**

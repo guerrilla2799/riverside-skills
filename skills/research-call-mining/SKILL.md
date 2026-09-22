@@ -13,7 +13,7 @@ messaging decisions. Nothing in it leaves the company without a clearance step.
 
 ## When to use
 - Before a positioning, messaging or homepage rewrite
-- Someone asks what prospects actually say, or why deals were won or lost
+- Someone asks what prospects say on calls, or why deals were won or lost
 - A headline test needs a candidate that came from buyers rather than from the team
 - A new team's first skill: it is internal, so there is nothing to clear before starting
 
@@ -74,7 +74,7 @@ messaging decisions. Nothing in it leaves the company without a clearance step.
    on a single call goes in an Anecdotes list, not the theme table. For win/loss, split the count
    into won and lost where the outcome is known.
 8. **Set it beside the homepage.** For each claim: the themes that support it with their call
-   counts, the prospect wording for the same idea, and the gap. Then the themes no claim touches,
+   counts, the prospect wording for the same idea, and the difference between the two. Then the themes no claim touches,
    by call count. Then the phrases prospects use that the site does not: check each against the
    pasted claims literally, case-insensitive, and list only phrases that do not appear there.
 9. **Stamp and write.** Write `findings.md`. Its first line is always
@@ -91,8 +91,7 @@ messaging decisions. Nothing in it leaves the company without a clearance step.
 11. **End with one recommendation.** The phrase worth a headline test, verbatim, with the number
     of calls it came from, the claim it would test against, and the page it belongs on: the
     homepage hero for problem language heard early in calls, a comparison or alternatives page for
-    switching language, the pricing page for cost and risk language. One phrase, one page, one
-    reason.
+    switching language, the pricing page for cost and risk language.
 
 ## Riverside tools
 
@@ -109,22 +108,22 @@ messaging decisions. Nothing in it leaves the company without a clearance step.
 - **Writes:** `workspace/research/call-mining-YYYY-MM-DD/findings.md`, with the saved transcripts
   in `transcripts/` beside it. `workspace/` is gitignored. Keep it that way: these are prospect
   calls
-- **findings.md holds:** the INTERNAL ONLY line; a source table (title, date, recording id, call
-  type); the theme table; the homepage comparison; phrases the site does not use; anecdotes;
-  every verified moment grouped by theme; the recommendation
+- **findings.md holds:** the INTERNAL ONLY line, a source table (title, date, recording id, call
+  type), the theme table, the homepage comparison, phrases the site does not use, anecdotes,
+  every verified moment grouped by theme, and the recommendation
 - **Prints:** calls read, moments found, quotes cut in verification, the top five themes with call
-  counts, the biggest gap in one sentence, and the recommendation
+  counts, the biggest difference between homepage and prospect language, in one sentence, and the recommendation
 - **No publish-log rows.** Nothing here is built from an edit or leaves the company. Every quote
   carries its recording id, so a later external use can be traced and cleared
 
 ## Rules & quality bar
 - **Prospect words only.** Rep lines, rep paraphrases and one-word agreements are not evidence
 - **Verbatim or cut.** A quote that fails the literal search in step 6 is removed, never reworded
-- **Count calls, not mentions.** The theme table sorts by distinct calls
+- **Count each call once per theme.** The theme table sorts by distinct calls
 - **Never guess the call set or a speaker's side.** Steps 2 and 4 list what was found and ask
 - **INTERNAL ONLY on line one,** every run
 - **Quotes leave only through step 10.** The script decides clearance, not the model
-- **Roles, not names,** for prospect speakers in `findings.md`, so it can circulate internally
+- **Prospect speakers go by role** in `findings.md`, so it can circulate internally
   without exposing individuals
 
 ## Related skills

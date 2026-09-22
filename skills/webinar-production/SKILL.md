@@ -78,7 +78,7 @@ writes the plan and the copy, then does the post-live editing through the MCP.
    `editing_cut_time_ranges` only when `readyToApply` is true, passing `expectedRevision`. Then
    run `editing_remove_pauses` with `thresholdMs: 1500`. A talk needs some air, and a threshold
    under 1000 sounds clipped. `editing_restore_audio_cleanup` with `cleanup: "pauses"` undoes it.
-7. **Move the canonical cut on purpose.** Read the new revision with `editing_get_revision`, write
+7. **Update the canonical cut on purpose.** Read the new revision with `editing_get_revision`, write
    it into `canonical.md` with a History row ("pre-show and dead Q&A cut, pauses over 1500 ms
    removed"), then run `../riverside-skills/scripts/stale-check SLUG`. Exit 2: STOP, there is no
    canonical cut. Exit 1: assets built from the untrimmed cut are logged. List them, rebuild them,
@@ -92,7 +92,7 @@ writes the plan and the copy, then does the post-live editing through the MCP.
    stays out of clips, and their audio is cut from the on-demand version until they approve.
 9. **Chapters.** Hand `edit_id@revision` to `podcast-show-notes-and-chapters`. Chapters come from
    the canonical edit's playable timeline, never raw recording time, because the trims shifted
-   every timestamp after them. That skill may write chapter markers into the edit, which moves
+   every timestamp after them. That skill may write chapter markers into the edit, which bumps
    the revision in `canonical.md` with a History row. Every step after this reads
    `edit_id@revision` fresh from `canonical.md`.
 10. **On-demand version.** Export with `exports_create_export`. This repo's `ask` rule prompts
@@ -135,9 +135,9 @@ writes the plan and the copy, then does the post-live editing through the MCP.
 
 ## Rules & quality bar
 - **Say the seam out loud.** Registration and the live event are never promised through the MCP
-- **Canonical before any cut,** and every move of it gets a History row in step 7
+- **Canonical before any cut,** and every change to it gets a History row in step 7
 - **The user approves trim ranges** before `editing_cut_time_ranges` runs
-- **Every voice cleared, not just the file.** Step 8 checks each speaker against `approved_by`
+- **Clear each speaker by name.** Step 8 checks each speaker against `approved_by`
 - **Playable timestamps only** for chapters and clips
 - **Copy is judged before it is sent,** by `content-quality-gates`
 - **Done means `stale-check` exits 0**

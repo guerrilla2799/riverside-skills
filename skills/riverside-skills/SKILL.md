@@ -35,7 +35,7 @@ Run all four. Report each as OK or MISSING, with the fix.
    connection.
 2. **Approval gate present.** Read `.claude/settings.json` in the current folder and
    `~/.claude/settings.json`. The gate is present when `permissions.ask` lists
-   `social_upload_create` under the prefix this session actually uses (`mcp__riverside__` or
+   `social_upload_create` under the prefix this session uses (`mcp__riverside__` or
    `mcp__claude_ai_Riverside__`). If it is missing, show the user the `ask` block from this repo's
    `.claude/settings.json` and offer to merge it into `~/.claude/settings.json`. Merge only on an
    explicit yes, preserve every existing key, and re-read the file afterwards to confirm it parses.
@@ -67,7 +67,7 @@ Ask one thing: **what recording do you have, and what should it become?** Route 
 | A draft of anything | A check before it goes out | `content-quality-gates` |
 | A task done three times | A skill | `skill-capture-loop` |
 
-If the user has no recordings in Riverside yet, the first move is getting some in: record, or
+If the user has no recordings in Riverside yet, the first step is getting some in: record, or
 upload existing calls in the Riverside app. Then `research-call-mining`, because it pays off
 fastest and needs no customer permission.
 
@@ -101,7 +101,7 @@ Templates live in `templates/`: `canonical.md`, `publish-log.md`, `clearance.md`
 | Connection check | `platform_list_recordings` | `limit: 5` is enough |
 | Finding IDs | `platform_list_productions` → `platform_list_studios` → `platform_get_project` | `get_project` returns recordings and edits in one call |
 
-Full catalog and the gaps: `docs/riverside-mcp.md`.
+Full catalog, and what the MCP does not cover: `docs/riverside-mcp.md`.
 
 ## Output
 - The setup report: four lines, OK or MISSING, each with its fix
@@ -110,7 +110,7 @@ Full catalog and the gaps: `docs/riverside-mcp.md`.
 ## Rules & quality bar
 - **Verify before building.** No route until the connection check returns recordings
 - **One skill at a time.** Loading several at once bloats context and produces mush
-- **Route on the recording, not the request.** Somebody asking for "more video" usually has
+- **Route on the recording the user has.** Somebody asking for "more video" usually has
   recorded calls that answer the question faster
 - **Never edit user settings without a yes**, and never remove an existing key
 

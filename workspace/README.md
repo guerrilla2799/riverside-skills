@@ -22,6 +22,6 @@ workspace/enablement/objection-library.md sales-enablement-clips: objection, cli
 workspace/skill-candidates.md             skill-capture-loop: tasks done by hand, and how often
 ```
 
-`canonical.md` is what lets `stale-check` tell you what went out of date when a cut changes.
-`clearance.md` is what `clearance-check` reads before anything leaves the building. See
+`stale-check` reads `canonical.md` to tell you what went out of date when a cut changes, and
+`clearance-check` reads `clearance.md` before anything leaves the building. See
 [docs/canonical-cut.md](../docs/canonical-cut.md).

@@ -20,7 +20,7 @@ Not trims, cards, captions or chapters inside the edit: those happen in Riversid
 - A `COMPLETED` export of the canonical revision, from `podcast-episode-pipeline`. Its export id is in `publish-log.md`
 - Titles, show notes and the chapter list, from `podcast-show-notes-and-chapters`
 - Episode number, season number, episode type and the explicit flag, from the user
-- Episode art if the episode has its own. Square; Apple asks for 1400 to 3000 px
+- Episode art if the episode has its own. Square. Apple asks for 1400 to 3000 px
 - Host access: a login for a manual upload, or an API key in an environment variable for an API upload. Never write a key into any file
 - `ffmpeg` and `ffprobe` installed locally
 - Scripts live at `../riverside-skills/scripts/`, relative to this skill's base directory. Run them from the folder that holds `workspace/`, or set `RIVERSIDE_WORKSPACE`
@@ -61,7 +61,7 @@ Not trims, cards, captions or chapters inside the edit: those happen in Riversid
    ```
 
    Verify with `ffprobe -show_format -show_chapters FINAL.mp3` (or `ffmpeg -i FINAL.mp3 -f ffmetadata -` where ffprobe is missing): every tag present, chapter count and start times matching the list. If anything is off, fix it and re-run before uploading.
-7. **Upload to the host.** By hand in the host's dashboard, or through the host's API. For the API, read the host's current API documentation first and confirm the endpoint, the auth scheme and the upload flow before any call. Never guess an endpoint or reuse one from memory. Riverside's own hosting is managed in the Riverside app; no MCP tool reaches it. Before any call or click that publishes or schedules, show the user the show name, episode title, episode and season number, publish now or the date, time and timezone, and draft or live. Get an explicit yes. Once apps fetch the feed the episode is out, and pulling it later does not reach copies already downloaded.
+7. **Upload to the host.** By hand in the host's dashboard, or through the host's API. For the API, read the host's current API documentation first and confirm the endpoint, the auth scheme and the upload flow before any call. Never guess an endpoint or reuse one from memory. Riverside's own hosting is managed in the Riverside app, and no MCP tool reaches it. Before any call or click that publishes or schedules, show the user the show name, episode title, episode and season number, publish now or the date, time and timezone, and draft or live. Get an explicit yes. Once apps fetch the feed the episode is out, and pulling it later does not reach copies already downloaded.
 8. **RSS metadata checklist.** Check the episode in the host, or in the fetched feed, against every line:
    - Title, matching the approved option
    - Description: the show notes, with every `[confirm link]` resolved or removed

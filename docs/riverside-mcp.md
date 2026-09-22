@@ -11,9 +11,9 @@ open an issue.
 
 ## Before anything else
 
-- **Plan:** Grow, Webinar, or Business. The MCP is included at no extra cost on those plans.
-- **Role:** account owner, admin, director, or editor.
-- **Connect in Claude Code:**
+- You need a Grow, Webinar, or Business plan. The MCP is included at no extra cost on those plans.
+- Your role must be account owner, admin, director, or editor.
+- Connect in Claude Code:
 
   ```bash
   claude mcp add --transport http --scope user riverside https://mcp.riverside.com/mcp
@@ -21,12 +21,12 @@ open an issue.
 
   Then run `/mcp` inside Claude Code and sign in. `--scope user` makes Riverside available in
   every folder. Leave it off and it only works in the folder where you ran the command.
-- **Credits:** using the MCP does not spend your Riverside AI credits.
+- Using the MCP doesn't spend your Riverside AI credits.
 
 ### Tool names depend on how you connected
 
-The tools below are listed by their base name, such as `social_upload_create`. What Claude Code
-actually sees has a prefix:
+The tools below are listed by their base name, such as `social_upload_create`. Claude Code sees
+each one with a prefix:
 
 | How you connected | Full tool name |
 |---|---|
@@ -34,11 +34,11 @@ actually sees has a prefix:
 | The Riverside connector on claude.ai | `mcp__claude_ai_Riverside__social_upload_create` |
 
 The approval gate in `.claude/settings.json` lists both forms. If you named the server
-something other than `riverside`, edit those entries to match or the gate will not fire.
+something other than `riverside`, edit those entries to match or the gate won't fire.
 
 ---
 
-## How Riverside is organised
+## How Riverside is organized
 
 ```
 production            one per account, usually
@@ -51,12 +51,12 @@ production            one per account, usually
 Most tools need IDs from the level above. The cheap way down is `platform_get_project`, which
 returns a project's recordings and edits in one call.
 
-**Edits are revisioned, and that matters more than anything else on this page.** Every write
-tool takes an `expectedRevision` and rejects a stale one. So `edit_id@revision` identifies one
+Every write tool takes an `expectedRevision` and rejects a stale one, because edits are
+revisioned. So `edit_id@revision` identifies one
 exact version of a cut, which is what this repo's `canonical.md` records and what
 `publish-log.md` stamps on every asset.
 
-**Edits never overwrite the recording.** `editing_create_edit_from_recording` and
+Edits never overwrite the recording. `editing_create_edit_from_recording` and
 `editing_clone_edit` make a new timeline. The original stays intact.
 
 ---
@@ -94,7 +94,7 @@ exact version of a cut, which is what this repo's `canonical.md` records and wha
 | `editing_insert_overlay` · `editing_insert_audio` | Layered visuals, music, sound |
 | `editing_get_stock_media` · `editing_insert_stock_media` · `editing_get_stock_music` | Pexels stock and the free music library |
 | `editing_batch` · `editing_validate_edit_plan` · `editing_apply_verified_edit_plan` | Many operations at once, including chapters. Read `editing_get_editing_guide` first |
-| `editing_compare_revisions` | What changed between two revisions. This is how a re-cut gets summarised |
+| `editing_compare_revisions` | What changed between two revisions. This is how a re-cut gets summarized |
 | `editing_get_revision` | Cheap check that a revision you hold is still current |
 | `editing_get_export_publish_data` | Content ID flags before a YouTube publish. A non-null `youtubeCode` means a likely copyright match |
 
@@ -111,8 +111,8 @@ exact version of a cut, which is what this repo's `canonical.md` records and wha
 → poll `media_get_media`. Files up to 500 MB: MP4, WEBM, MPEG, WAV, MP3, OGG, JPG, PNG.
 
 These land in the editor's **Your Media** library, ready to place on a timeline. Use them for
-closing cards, intro bumpers, B-roll and logos. Going by the tool's own documentation, this is
-not how you get a call transcribed. To bring in a Zoom or Gong recording as a searchable
+closing cards, intro bumpers, B-roll and logos. Going by the tool's own documentation, this isn't
+how you get a call transcribed. To bring in a Zoom or Gong recording as a searchable
 recording, upload it in the Riverside app.
 
 ### Publish
@@ -121,7 +121,7 @@ recording, upload it in the Riverside app.
 |---|---|---|
 | `social_get_connected_platforms` | Accounts on a studio, with IDs and per-account limits | An empty `accounts` list does not always mean nothing is connected |
 | `social_get_publishing_guidelines` | Per-platform caps, video limits, error recovery | Read it before composing any post |
-| `social_upload_create` | Publishes or schedules a **video** to YouTube, YouTube Shorts, TikTok, Instagram, Facebook, LinkedIn or X | It needs a `clipId` (a clip or an edit), so text-only posts are out. LinkedIn posts go to the member's personal profile; company Pages are not supported yet. Facebook takes Reels only: vertical, 3 to 90 seconds. TikTok takes vertical or square, and rejects watermarked video. Shorts is `platform: YouTube` with `youtubePlatform: YOUTUBE_SHORTS`, capped at 180 seconds, 9:16 or 1:1. Omit `scheduledAt` and it publishes **immediately**. YouTube needs an explicit `privacyStatus`. An unexported edit publishes with `composeSettings`, which renders it first |
+| `social_upload_create` | Publishes or schedules a **video** to YouTube, YouTube Shorts, TikTok, Instagram, Facebook, LinkedIn or X | It needs a `clipId` (a clip or an edit), so text-only posts are out. LinkedIn posts go to the member's personal profile, and company Pages aren't supported yet. Facebook takes Reels only: vertical, 3 to 90 seconds. TikTok takes vertical or square, and rejects watermarked video. Shorts is `platform: YouTube` with `youtubePlatform: YOUTUBE_SHORTS`, capped at 180 seconds, 9:16 or 1:1. Omit `scheduledAt` and it publishes **immediately**. YouTube needs an explicit `privacyStatus`. An unexported edit publishes with `composeSettings`, which renders it first |
 | `social_get_upload_status` | The only proof a post went out | Live means `COMPLETED`. Check once shortly after publishing, stop at `SCHEDULED`, and check again when the user asks. Riverside's own guidance: no polling loop |
 | `social_list_uploads` · `social_get_upload` | Find and read posts | With no dates, `list_uploads` shows the next 30 days only |
 | `social_update_upload` | Reschedule or edit a post that has not published | `publishNow` cannot be undone. It cannot swap the video, even when `social_get_upload` reports `mediaEditable`: through the MCP, a new cut means cancel and re-create |
@@ -131,16 +131,16 @@ recording, upload it in the Riverside app.
 
 `social_upload_create` takes no revision. It posts the edit as it stands at the moment of the call, so check `editing_get_revision` against `canonical.md` right before publishing.
 
-**Once a post is published, nothing on this MCP can edit, unpublish or delete it.** That single
-fact is why the approval gate exists.
+The approval gate exists because nothing on this MCP can edit, unpublish or delete a post once
+it's published.
 
 ---
 
 ## What the MCP doesn't cover
 
-These are the seams. The skills route around each one rather than pretending it isn't there.
+The skills route around each of these, and the last column names the skill that handles it.
 
-| Gap | What to do instead | Skill that handles it |
+| Not covered | What to do instead | Skill that handles it |
 |---|---|---|
 | No download link for a rendered file | Download from your Riverside exports folder | `podcast-host-and-rss` |
 | Your podcast host (Transistor, Buzzsprout, Captivate, or Riverside's own hosting) | Upload through the host, by hand or through its API | `podcast-host-and-rss` |
@@ -163,8 +163,8 @@ before each call no matter what the skill says:
 - `editing_set_brand`: changes the brand kit for the whole studio
 - `exports_create_export`: starts a render
 
-Tested 2026-09-21: an `ask` rule held even when the same tool was explicitly allowed. It was not
-tested with permission prompts turned off, so **keep prompts on when you publish.**
+Tested 2026-09-21: an `ask` rule held even when the same tool was explicitly allowed. It wasn't
+tested with permission prompts turned off, so keep prompts on when you publish.
 
 The file only applies when you run Claude Code from inside this folder. If you copied the skills
 into `~/.claude/skills/`, ask the `riverside-skills` router to add the gate to your user settings,

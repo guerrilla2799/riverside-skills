@@ -3,8 +3,8 @@
 ## Before you start
 
 - **Claude Code**, installed and signed in.
-- **A Riverside Grow, Webinar or Business plan.** That's where the MCP is included. Your
-  Riverside role needs to be owner, admin, director or editor.
+- **A Riverside Grow, Webinar, or Business plan.** That's where the MCP is included. Your
+  Riverside role needs to be owner, admin, director, or editor.
 - **ffmpeg** (optional). Only the podcast skills use it, to prep the audio file for your host and
   to grab a frame for a thumbnail. On a Mac: `brew install ffmpeg`.
 
@@ -21,7 +21,7 @@ opens. That sign-in is the authorization step, and it's the easiest one to skip 
 in the folder where you ran the command.
 
 To publish or schedule posts, connect your social accounts (YouTube, TikTok, Instagram,
-Facebook, LinkedIn, X) in the Riverside dashboard first.
+Facebook, LinkedIn, and X) in the Riverside dashboard first.
 
 ## 2. Install the skills
 
@@ -50,14 +50,14 @@ cp -R riverside-skills/skills/* ~/.claude/skills/
 Restart Claude Code. The skills are now available in every folder, and each project gets its own
 `workspace/` wherever you run them.
 
-**One extra step with this option.** The approval gate lives in the repo's
+This option needs one extra step, because the approval gate lives in the repo's
 `.claude/settings.json`, which doesn't apply outside the cloned folder. Ask Claude:
 
 ```
 Check my Riverside setup.
 ```
 
-The router spots the missing gate and offers to add it to `~/.claude/settings.json`. It changes
+The `riverside-skills` router spots the missing gate and offers to add it to `~/.claude/settings.json`. It changes
 nothing without a yes. To do it by hand, copy the `ask` list from this repo's
 `.claude/settings.json` into the `permissions` block of `~/.claude/settings.json`.
 
@@ -72,8 +72,8 @@ List my five most recent Riverside recordings with their dates.
 If your recordings come back, you're connected. If Claude says it doesn't have a Riverside tool,
 run `/mcp` again, because the sign-in didn't finish.
 
-Then run `Check my Riverside setup.` for the full check: connection, approval gate, workspace,
-and ffmpeg.
+Then run `Check my Riverside setup.` for the full check, which covers the connection, the approval
+gate, the workspace, and ffmpeg.
 
 ## If you named the server something else
 
@@ -85,8 +85,8 @@ the entries in `.claude/settings.json` to match, or the gate won't fire.
 
 ## Update
 
-Option A: `git pull`. Option B: pull, then copy the skills again. Your `workspace/` is never
-touched by either.
+Option A: `git pull`. Option B: pull, then copy the skills again. Neither one touches your
+`workspace/`.
 
 ## Remove
 

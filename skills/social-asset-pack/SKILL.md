@@ -25,15 +25,15 @@ Approved clips in, per-platform copy out. For each clip: one hook, then the titl
 1. **Resolve the clips.** Match every clip the user names to a `publish-log.md` row carrying an `editId`. A post announcing the full episode uses the canonical `edit_id` from `canonical.md` instead. A clip with no row: STOP. It was not scored and built by `clip-selection`, so there is no logged edit to write for. Route to `clip-selection`.
 2. **Check staleness.** Run `../riverside-skills/scripts/stale-check SLUG`.
    - Exit 2: STOP. `canonical.md` or `publish-log.md` is missing, or no canonical cut is declared.
-   - Exit 1: if any clip in this pack is listed as STALE, STOP. It was cut from an older revision of the canonical edit; route to `podcast-recut-and-republish` or re-run `clip-selection`. Stale rows for other assets are reported and do not block.
+   - Exit 1: if any clip in this pack is listed as STALE, STOP. It was cut from an older revision of the canonical edit. Route to `podcast-recut-and-republish` or re-run `clip-selection`. Stale rows for other assets are reported and do not block.
 3. **Clear before drafting.** If any clip features a customer or guest (anyone but the user), run `../riverside-skills/scripts/clearance-check SLUG public` before writing a word.
    - Non-zero exit: STOP. Report the script's stderr verbatim and offer to draft the consent request instead (`customer-interview-engine` for customers, `podcast-guest-ops` for guests).
    - Exit 0: print the `Restrictions:` line and apply it to every field, thumbnail text and hashtags included. "First name only" means no surname anywhere, @tags included.
 4. **Read each clip's own transcript.** `editing_read_aligned_transcript` on the clip's edit. Record the `revision` it returns in the pack header: `social_upload_create` posts an edit as it stands, so `distribution-and-scheduling` checks that the clip has not changed since this copy was written. Copy may quote only words said inside the clip, verbatim, with the timestamp on that clip's timeline. A number a customer or guest said aloud keeps its `confirm with customer` flag, and a pack that uses it cannot be approved until the number is confirmed in writing.
 5. **Read the live caps.** `social_get_publishing_guidelines` for the target platforms. Then `platform_get_recording` for the `studioId`, and `social_get_connected_platforms` for which accounts exist and the X account's `characterLimit`. With no X account connected, draft to 280 and mark the limit unverified. Never write to a cap from memory.
 6. **Ask about sponsorship.** Ask whether any clip is sponsored, and do not assume the answer. Sponsored copy opens every caption with a plain disclosure (`Paid partnership with SPONSOR.` or `Sponsored by SPONSOR.`). The pack notes `tiktokData.isBrandedContent: true` so `distribution-and-scheduling` sets it.
-7. **Load the voice.** If the user named a voice or style file, read it where it lives at draft time. Never paste a copy into this skill or the workspace. Skills point at knowledge files; they do not carry copies. With no file, write plain and direct.
-8. **Write the hook, then each platform.** One hook per clip, taken from what the clip actually says. Then each target platform:
+7. **Load the voice.** If the user named a voice or style file, read it where it lives at draft time. Never paste a copy into this skill or the workspace. Skills point at knowledge files and do not carry copies. With no file, write plain and direct.
+8. **Write the hook, then each platform.** One hook per clip, taken from the clip's own words. Then each target platform:
 
    | Platform | Field in `social_upload_create` | Write to |
    |---|---|---|
@@ -53,9 +53,9 @@ Approved clips in, per-platform copy out. For each clip: one hook, then the titl
    - If the export is already downloaded, the base frame: `ffmpeg -ss M:SS -i EXPORT.mp4 -frames:v 1 workspace/episodes/SLUG/assets/thumb-clip-NN.png`
 
    The same timestamp fills `instagramData.thumbnailOffset` (seconds) and `tiktokData.videoCoverTimestampMs` (milliseconds). `social_upload_create` has no YouTube thumbnail field, so a custom YouTube thumbnail is set in YouTube Studio. Say so in the brief.
-10. **Count every field in code.** Print each field's character count beside its cap. For X, count every URL as 23 and CJK characters and surrogate-pair emoji as 2; the guidelines name `twitter-text` (`parseTweet(text).weightedLength`) as the exact counter, so use it when it is installed. Anything over a cap is rewritten, never cut off mid-sentence.
+10. **Count every field in code.** Print each field's character count beside its cap. For X, count every URL as 23 and CJK characters and surrogate-pair emoji as 2. The guidelines name `twitter-text` (`parseTweet(text).weightedLength`) as the exact counter, so use it when it is installed. Anything over a cap is rewritten, never cut off mid-sentence.
 11. **Write the file and log it.** One file per clip: `workspace/episodes/SLUG/assets/social-pack-clip-NN.md`, in the shape under Output. Add a `publish-log.md` row per pack: date, `social-pack clip-NN`, `built_from` copied from the clip's row, destination `content-quality-gates`, reference = the file path, state `draft`.
-12. **Gate, then hand off.** Hand each pack to `content-quality-gates`. It judges and logs its verdict to `assets/reviews.md`; this skill revises only what the verdict names, then the judge runs again.
+12. **Gate, then hand off.** Hand each pack to `content-quality-gates`. It judges and logs its verdict to `assets/reviews.md`. This skill revises only what the verdict names, then the judge runs again.
     - When a pack passes and the user signs off on its copy, set its row to `approved`. The judge never changes a row's state.
     - A pack with an open `confirm with customer` flag stays `draft`.
     - Only `approved` packs go to `distribution-and-scheduling`. This skill never calls `social_upload_create`, `social_update_upload` or `social_cancel_upload`.
@@ -100,7 +100,7 @@ Thumbnail: TEXT (4 words max) · frame M:SS · COMPOSITION · YouTube: set in St
 - **Nothing is approved until `content-quality-gates` passes it** and the user signs off
 
 ## Related skills
-- Requires: `clip-selection` for built, logged clips; `riverside-skills` for the scripts
+- Requires: `clip-selection` for built, logged clips, and `riverside-skills` for the scripts
 - Feeds: `content-quality-gates`, then `distribution-and-scheduling`
 - Pairs with: `transcript-to-written` when a clip also needs a long-form companion piece
 - See also: `docs/riverside-mcp.md`

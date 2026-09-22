@@ -7,7 +7,7 @@ description: >-
 # Sales Enablement Clips
 
 Builds a library of objections from recorded sales calls: what the customer said, the best answer
-a rep on the team has actually given, and a clip of that exchange. Demo snippets and other
+a rep on the team has given on a recorded call, and a clip of that exchange. Demo snippets and other
 rep-facing cuts follow the same path. Internal rep training is the default and needs no customer
 clearance. A clip that goes to a prospect is external and passes the clearance script first.
 
@@ -46,9 +46,9 @@ clearance. A clip that goes to a prospect is external and passes the clearance s
 3. **Pull each exchange.** From the transcript, never from a search fragment: the customer's words
    verbatim, the rep's reply that followed, and what the customer said next. Stamp each with
    recording title, date and timestamp as m:ss. The tool does not zero-pad: `1:5.000` is 1:05.
-4. **Rank the answers for each objection.** First by what the customer said next: moved forward
+4. **Rank the answers for each objection.** First by what the customer said next: advanced
    (asked about next steps, booked a follow-up, brought in the decision maker) beats accepted,
-   which beats stalled. Then by the rep's move: asked a question before answering, used a specific
+   which beats stalled. Then by what the rep did: asked a question before answering, used a specific
    customer outcome, held price. Never rank on polish. Add the deal outcome if the user knows it.
    Show the top two with their evidence and let the user or sales leader pick.
 5. **Set up each source call.** `../riverside-skills/scripts/new-recording SLUG` (exit 1: the
@@ -119,8 +119,8 @@ clearance. A clip that goes to a prospect is external and passes the clearance s
 | 10 Send | `exports_create_export` · `exports_get_export` | Renders on every call. No download link |
 
 ## Output
-- **Writes:** one clip edit per objection or demo snippet in Riverside;
-  `workspace/enablement/objection-library.md`; a `publish-log.md` row per clip in each source
+- **Writes:** one clip edit per objection or demo snippet in Riverside,
+  `workspace/enablement/objection-library.md`, and a `publish-log.md` row per clip in each source
   call's folder
 - **Prints:** objections searched, hits confirmed, the ranked answers per objection with
   evidence, pairings refused and why, clips cut with their edit ids, and each clip's clearance
@@ -130,8 +130,8 @@ clearance. A clip that goes to a prospect is external and passes the clearance s
   different customer's question
 - **Customer-side words make the objection.** A rep naming an objection is not evidence of one
 - **Rank by what the customer said next,** not by how smooth the rep sounded
-- **Clone, never cut the canonical edit**
-- **Quote transcripts, never search fragments**
+- **Cut clips only on a clone of the canonical edit**
+- **Quote only from transcripts**
 - **Internal by default. Outside the company only through the script in step 10**
 - **Every clip logged twice:** the source call's publish log and the library
 - **Never share clips with `includePreviewUrl`.** It is a studio-wide token that cannot be
