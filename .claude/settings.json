@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "ask": [
+      "mcp__riverside__social_upload_create",
+      "mcp__riverside__social_update_upload",
+      "mcp__riverside__social_cancel_upload",
+      "mcp__riverside__social_disconnect_social_account",
+      "mcp__riverside__editing_set_brand",
+      "mcp__riverside__exports_create_export",
+      "mcp__claude_ai_Riverside__social_upload_create",
+      "mcp__claude_ai_Riverside__social_update_upload",
+      "mcp__claude_ai_Riverside__social_cancel_upload",
+      "mcp__claude_ai_Riverside__social_disconnect_social_account",
+      "mcp__claude_ai_Riverside__editing_set_brand",
+      "mcp__claude_ai_Riverside__exports_create_export"
+    ]
+  }
+}

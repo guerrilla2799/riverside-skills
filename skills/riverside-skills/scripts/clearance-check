@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# Decide whether a recording is cleared for a use, from its clearance.md.
+#
+#   clearance-check SLUG internal|public
+#
+# Exit 0  cleared for that use. Restrictions, if any, are printed on stdout.
+# Exit 2  no clearance.md for this recording.
+# Exit 3  clearance.md exists but does not clear this use. Every reason is printed on stderr.
+# Exit 64 bad arguments.
+#
+# Skills treat any non-zero exit as a stop. The script decides, not the model.
+set -euo pipefail
+
+usage() {
+  echo "usage: clearance-check SLUG internal|public" >&2
+  exit 64
+}
+
+[ $# -eq 2 ] || usage
+slug=$1
+use=$2
+case "$use" in
+  internal|public) ;;
+  *) usage ;;
+esac
+
+ws="${RIVERSIDE_WORKSPACE:-./workspace}"
+f="$ws/episodes/$slug/clearance.md"
+
+if [ ! -f "$f" ]; then
+  echo "NOT CLEARED: no clearance file at $f" >&2
+  echo "Run new-recording $slug, then fill in clearance.md from the written approval." >&2
+  exit 2
+fi
+
+field() {
+  awk -v k="$1" '
+    index($0, k ":") == 1 {
+      v = substr($0, length(k) + 2)
+      gsub(/^[ \t]+|[ \t]+$/, "", v)
+      print v
+      exit
+    }' "$f"
+}
+
+status=$(field status)
+scope=$(field scope)
+approved_by=$(field approved_by)
+approved_on=$(field approved_on)
+evidence=$(field evidence)
+restrictions=$(field restrictions)
+
+fail=0
+reason() {
+  echo "NOT CLEARED: $1" >&2
+  fail=1
+}
+
+if [ "$use" = "internal" ]; then
+  case "$status" in
+    cleared|internal-only) ;;
+    *) reason "status is '${status:-empty}', internal use needs 'cleared' or 'internal-only'" ;;
+  esac
+else
+  [ "$status" = "cleared" ] || reason "status is '${status:-empty}', public use needs 'cleared'"
+  [ "$scope" = "public" ] || reason "scope is '${scope:-empty}', public use needs 'public'"
+  [ -n "$approved_by" ] || reason "approved_by is empty"
+  if ! printf '%s' "$approved_on" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'; then
+    reason "approved_on '${approved_on:-empty}' is not a YYYY-MM-DD date"
+  fi
+  [ -n "$evidence" ] || reason "evidence is empty, point it at the written approval"
+fi
+
+if [ "$fail" -ne 0 ]; then
+  echo "File: $f" >&2
+  exit 3
+fi
+
+echo "CLEARED for $use use: $slug"
+if [ -n "$restrictions" ]; then
+  echo "Restrictions: $restrictions"
+fi

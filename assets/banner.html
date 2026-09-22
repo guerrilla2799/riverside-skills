@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root{
+    --bg:#0f0f0f;
+    --orange:#F3640A;
+    --ink:#F5F3EF;
+    --muted:#9a9a9a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:1200px;height:675px;}
+  body{
+    font-family:-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;background:var(--bg);overflow:hidden;
+  }
+  .stage{
+    position:relative;width:1200px;height:675px;background:#0f0f0f;
+  }
+  /* subtle dot grid */
+  .dots{
+    position:absolute;inset:0;
+    background-image:radial-gradient(circle, rgba(255,255,255,0.055) 1.4px, transparent 1.6px);
+    background-size:26px 26px;background-position:0 0;
+  }
+  /* faint spotlight behind headline */
+  .glow{
+    position:absolute;inset:0;
+    background:radial-gradient(680px 420px at 50% 44%, rgba(255,255,255,0.045), transparent 70%);
+  }
+  .logo{position:absolute;top:40px;right:54px;height:66px;width:auto;}
+  .center{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;padding-top:6px;
+  }
+  h1{
+    font-weight:800;font-size:132px;line-height:0.98;letter-spacing:-3.5px;
+  }
+  h1 .l1{color:var(--ink);display:block;}
+  h1 .l2{color:var(--orange);display:block;}
+  .rule{width:520px;height:3px;background:var(--orange);margin:38px 0 30px;}
+  .sub{font-size:33px;font-weight:400;color:var(--muted);letter-spacing:0.2px;}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="dots"></div>
+    <div class="glow"></div>
+    <img class="logo" src="ss-logo.png" alt="Stack &amp; Scale">
+    <div class="center">
+      <h1>
+        <span class="l1">Riverside</span>
+        <span class="l2">Skills.</span>
+      </h1>
+      <div class="rule"></div>
+      <div class="sub">Recorded calls into pipeline assets, as Claude Code skills</div>
+    </div>
+  </div>
+</body>
+</html>

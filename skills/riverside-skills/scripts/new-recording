@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Scaffold the working folder for one recording.
+#
+#   new-recording SLUG
+#
+# Creates workspace/episodes/SLUG/ with canonical.md, publish-log.md, clearance.md and an
+# assets/ folder. Refuses to touch a folder that already exists. Set RIVERSIDE_WORKSPACE to
+# use a workspace somewhere other than ./workspace.
+set -euo pipefail
+
+usage() {
+  echo "usage: new-recording SLUG   (lowercase, digits, hyphens, e.g. 012-pricing-objections)" >&2
+  exit 64
+}
+
+[ $# -eq 1 ] || usage
+slug=$1
+case "$slug" in
+  ''|-*|*[!a-z0-9-]*) usage ;;
+esac
+
+here="$(cd "$(dirname "$0")" && pwd)"
+ws="${RIVERSIDE_WORKSPACE:-./workspace}"
+dir="$ws/episodes/$slug"
+
+if [ -e "$dir" ]; then
+  echo "new-recording: $dir already exists, refusing to overwrite it" >&2
+  exit 1
+fi
+
+mkdir -p "$dir/assets"
+for f in canonical.md publish-log.md clearance.md; do
+  cp "$here/../templates/$f" "$dir/$f"
+done
+echo "$dir"

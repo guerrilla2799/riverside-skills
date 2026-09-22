@@ -1,0 +1,27 @@
+.DS_Store
+node_modules/
+*.log
+*.bak
+
+# Media, transcripts and drafts from your own recordings. Keep customer calls, guest
+# recordings, and anything under NDA out of git.
+workspace/**
+!workspace/**/
+!workspace/README.md
+!workspace/**/.gitkeep
+
+# Audio, video and caption files, wherever they end up
+*.mp4
+*.mov
+*.m4v
+*.webm
+*.mpeg
+*.mpg
+*.mp3
+*.m4a
+*.aac
+*.wav
+*.ogg
+*.flac
+*.srt
+*.vtt

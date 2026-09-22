@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# List every logged asset that was built from something other than the current canonical cut.
+#
+#   stale-check SLUG
+#
+# Reads edit_id and revision from canonical.md, then compares each publish-log.md row's
+# built_from column against edit_id@revision. Rows marked superseded or retired are skipped.
+#
+# Exit 0  nothing stale.
+# Exit 1  stale assets found, one per line on stdout.
+# Exit 2  canonical.md or publish-log.md is missing, or canonical.md has no edit_id/revision.
+# Exit 64 bad arguments.
+set -euo pipefail
+
+[ $# -eq 1 ] || { echo "usage: stale-check SLUG" >&2; exit 64; }
+slug=$1
+
+ws="${RIVERSIDE_WORKSPACE:-./workspace}"
+dir="$ws/episodes/$slug"
+canon="$dir/canonical.md"
+log="$dir/publish-log.md"
+
+for f in "$canon" "$log"; do
+  [ -f "$f" ] || { echo "stale-check: missing $f" >&2; exit 2; }
+done
+
+field() {
+  awk -v k="$1" '
+    index($0, k ":") == 1 {
+      v = substr($0, length(k) + 2)
+      gsub(/^[ \t]+|[ \t]+$/, "", v)
+      print v
+      exit
+    }' "$canon"
+}
+
+edit_id=$(field edit_id)
+revision=$(field revision)
+if [ -z "$edit_id" ] || [ -z "$revision" ]; then
+  echo "stale-check: canonical.md has no edit_id or revision yet. Declare the canonical cut first." >&2
+  exit 2
+fi
+current="$edit_id@$revision"
+
+awk -v cur="$current" '
+  BEGIN { FS = "|"; stale = 0; checked = 0 }
+  /^\|/ {
+    for (i = 1; i <= NF; i++) gsub(/^[ \t]+|[ \t]+$/, "", $i)
+    if ($3 == "asset" || $2 ~ /^-+$/) next
+    if ($7 == "superseded" || $7 == "retired") next
+    checked++
+    if ($4 != cur) {
+      stale++
+      printf "STALE  %s  built_from=%s  destination=%s  reference=%s  state=%s\n", $3, $4, $5, $6, $7
+    }
+  }
+  END {
+    printf "%d stale of %d live assets. Canonical is %s\n", stale, checked, cur > "/dev/stderr"
+    exit (stale > 0 ? 1 : 0)
+  }' "$log"
