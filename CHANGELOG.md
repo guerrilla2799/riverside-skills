@@ -12,6 +12,18 @@
   first and the skill's last output is the approval email carrying that exact material. Clearance
   is now enforced at the publish boundary instead of before drafting, so nothing reaches a
   platform without the saved written reply
+- Fixed a chain break the reorder above introduced. `customer-interview-engine` had lost its
+  pre-draft gate, but `clip-selection` and `social-asset-pack` still stopped on a clearance
+  check, and a fresh recording folder starts at `status: pending`, which fails the internal
+  check as well as the public one. Drafting a case study therefore could not reach the clip or
+  copy steps at all. `customer-interview-engine` now opens the folder at `internal-only` after
+  the interview, which is true to what the interviewee agreed to, and the written reply upgrades
+  it to `cleared` and `public`. `clip-selection` and `social-asset-pack` branch on whether the
+  work is leaving the company now rather than eventually. No script changed:
+  `clearance-check` already supported this
+- `customer-interview-engine` routes the case-study video's YouTube title and description to
+  `social-asset-pack`, which already wrote `youtubeData.description` but was only ever handed
+  clips
 - 17 skills
 
 ## 1.0.0 – 2026-09-23

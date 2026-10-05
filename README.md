@@ -51,7 +51,7 @@ The scripts live in `skills/riverside-skills/scripts/`. They're a few dozen line
 
 **Repurposing**
 - `clip-selection` – every candidate moment scored, the top five with reasons, cut only after you pick
-- `social-asset-pack` – per-platform captions, titles, hooks, and thumbnail briefs for approved clips
+- `social-asset-pack` – per-platform captions, titles, hooks, and thumbnail briefs, for approved clips or for a full video
 - `transcript-to-written` – newsletter issues, blog posts, and LinkedIn text posts from a transcript
 - `distribution-and-scheduling` – the only skill that publishes. Calendar, confirmation, then status until it's live
 
