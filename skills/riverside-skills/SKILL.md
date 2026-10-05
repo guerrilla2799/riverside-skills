@@ -63,7 +63,8 @@ Ask one thing: **what recording do you have, and what should it become?** Route 
 | Approved clips | Captions, titles, hooks per platform | `social-asset-pack` |
 | Any recording | A newsletter, blog or LinkedIn text post | `transcript-to-written` |
 | Approved assets | Scheduled or published | `distribution-and-scheduling` |
-| A webinar | Run-of-show, then on-demand and clips | `webinar-production` |
+| A webinar | Run-of-show, then on-demand, clips and a blog post | `webinar-production` |
+| Old webinars nobody opens | The segments that answer a current angle | `webinar-archive-mining` |
 | A draft of anything | A check before it goes out | `content-quality-gates` |
 | A task done three times | A skill | `skill-capture-loop` |
 

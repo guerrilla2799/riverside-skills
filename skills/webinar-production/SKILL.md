@@ -1,13 +1,16 @@
 ---
 name: webinar-production
 description: >-
-  Webinar run-of-show, webinar promo and reminder copy, webinar to on-demand, post-webinar follow-up. Plans the live event, then trims the recording with editing_remove_pauses and cuts. Registration runs in your webinar tool. Clips: clip-selection.
+  Webinar run-of-show, promo and reminder copy, webinar to on-demand, social clips with captions,
+  webinar to blog post, post-webinar follow-up. Plans the live event, then trims and routes each
+  asset. Registration runs in your webinar tool.
 ---
 
 # Webinar Production
 
-Plans a webinar, then turns its recording into an on-demand version, chapters, clips and follow-up
-emails. The Riverside MCP has no webinar, registration or email tools. Registration, reminders and
+Plans a webinar, then turns its recording into an on-demand version, chapters, social clips with
+the copy that goes with them, a blog post, and follow-up emails. The Riverside MCP has no webinar,
+registration or email tools. Registration, reminders and
 the live event itself run in Riverside's webinar product or your webinar platform. This skill
 writes the plan and the copy, then does the post-live editing through the MCP.
 
@@ -33,8 +36,9 @@ writes the plan and the copy, then does the post-live editing through the MCP.
 1. **Scaffold and start clearance early.** Run `../riverside-skills/scripts/new-recording SLUG`
    (exit 1: the folder exists, use it). Send each guest speaker the written consent ask now, not
    after the event, covering the recording, the on-demand version, clips and social posts. Adapt
-   the consent ask in `customer-interview-engine`. Replies go into the folder and
-   `clearance.md`.
+   the approval email in `customer-interview-engine` step 10, which asks for the same permissions.
+   A webinar clears its speakers up front, because a guest who declines afterwards has already
+   been broadcast live. Replies go into the folder and `clearance.md`.
 2. **Run-of-show** to `assets/run-of-show.md`. A table: clock time with timezone, minute, segment,
    who is on, what is on screen, producer cue. Default shape for a 45-minute session:
    - T-30: speakers join backstage. Audio, camera, slides and backup phone numbers checked
@@ -100,17 +104,25 @@ writes the plan and the copy, then does the post-live editing through the MCP.
     `COMPLETED`. `FAILED` is final. The MCP returns no download link: download the file from the
     Riverside exports folder and upload it to the webinar platform's on-demand page by hand. A
     YouTube upload goes through `distribution-and-scheduling`.
-11. **Clips.** Hand `edit_id@revision` and the list of cleared speakers to `clip-selection`, then
-    `social-asset-pack`. `distribution-and-scheduling` publishes. This skill never calls
-    `social_upload_create`.
-12. **Follow-up email copy** to `assets/follow-up-copy.md`: attendees (thanks, the on-demand link,
+11. **Clips, and the copy that goes with them.** Hand `edit_id@revision` and the list of cleared
+    speakers to `clip-selection`, which scores and cuts. Then hand the approved clips to
+    `social-asset-pack`, which writes the hook, caption, title and thumbnail brief per platform to
+    `assets/social-copy.md`. Give it the webinar's one takeaway and the call to action, so the
+    captions carry the same promise the promo copy made. `distribution-and-scheduling` publishes.
+    This skill never calls `social_upload_create`.
+12. **Blog post.** Hand `edit_id@revision` to `transcript-to-written`, format `blog post`, output
+    `assets/blog-post.md`. It reads the aligned transcript from the canonical edit rather than
+    `platform_get_transcript`, so its quotes and timestamps match the on-demand cut and the clips.
+    The Q&A is usually the strongest section, because the questions are the audience's own words.
+    Speaker quotes follow step 8's clearance result: a speaker who is not cleared is not quoted.
+13. **Follow-up email copy** to `assets/follow-up-copy.md`: attendees (thanks, the on-demand link,
     one takeaway or clip, the call to action), no-shows (the on-demand link and the one thing they
     missed), and people who asked a question (the answer, or an offer to talk). ON-DEMAND-LINK
     stays a placeholder until the page exists. It goes through `content-quality-gates` first, then
     out from the webinar platform, where the attendee lists live.
-13. **Log and finish.** A row per asset in `publish-log.md`: the on-demand export, chapters, each
-    clip, each follow-up email. `built_from` is `edit_id@revision` from `canonical.md`. Done means
-    `stale-check SLUG` exits 0.
+14. **Log and finish.** A row per asset in `publish-log.md`: the on-demand export, chapters, each
+    clip, the social copy, the blog post, each follow-up email. `built_from` is
+    `edit_id@revision` from `canonical.md`. Done means `stale-check SLUG` exits 0.
 
 ## Riverside tools
 
@@ -129,7 +141,8 @@ writes the plan and the copy, then does the post-live editing through the MCP.
 - **Before:** `assets/run-of-show.md`, `assets/promo-copy.md`, consent asks sent to each guest
 - **After:** the on-demand edit in Riverside with `canonical.md` at its final revision, chapters
   via `podcast-show-notes-and-chapters`, an export in the Riverside exports folder,
-  `assets/follow-up-copy.md`, and a `publish-log.md` row per asset
+  `assets/social-copy.md`, `assets/blog-post.md`, `assets/follow-up-copy.md`, and a
+  `publish-log.md` row per asset
 - **Prints:** the trim ranges for approval, the new revision, the clearance result with every
   speaker named or missing, the export status, and the `stale-check` result
 
@@ -144,6 +157,7 @@ writes the plan and the copy, then does the post-live editing through the MCP.
 
 ## Related skills
 - Hands off to: `podcast-show-notes-and-chapters`, `clip-selection`, `social-asset-pack`,
-  `distribution-and-scheduling`, `content-quality-gates`
+  `transcript-to-written`, `distribution-and-scheduling`, `content-quality-gates`
 - Pairs with: `customer-interview-engine` for the consent wording, when a customer is a speaker
+- Older recordings, not the one you just ran: `webinar-archive-mining`
 - Setup and shared scripts: `riverside-skills`. Tool catalog and seams: `docs/riverside-mcp.md`

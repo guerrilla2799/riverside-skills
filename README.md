@@ -32,14 +32,14 @@ The scripts live in `skills/riverside-skills/scripts/`. They're a few dozen line
 
 ---
 
-## The 16 skills
+## The 17 skills
 
 **Start here**
 - `riverside-skills` – checks your setup, then routes you to the right skill
 
 **Pipeline assets from recordings you already have**
 - `research-call-mining` – discovery and win/loss calls mined for the words prospects use, set against your homepage
-- `customer-interview-engine` – interview guide, consent, then a case study where every quote is verbatim and every number is flagged
+- `customer-interview-engine` – interview guide, then the case study, quotes and clips drafted first, and last the approval email your customer signs
 - `sales-enablement-clips` – an objection library from real calls, with the best rep answer to each
 
 **Podcast**
@@ -56,7 +56,8 @@ The scripts live in `skills/riverside-skills/scripts/`. They're a few dozen line
 - `distribution-and-scheduling` – the only skill that publishes. Calendar, confirmation, then status until it's live
 
 **Events**
-- `webinar-production` – run-of-show, then the live recording into on-demand and clips
+- `webinar-production` – run-of-show, then the live recording into on-demand, social clips with their captions, and a blog post
+- `webinar-archive-mining` – old webinars searched for the segments that answer a current angle, cut into clips with a blog post each
 
 **Quality**
 - `content-quality-gates` – clearance, verbatim quotes, numbers, staleness, and platform limits, then a score

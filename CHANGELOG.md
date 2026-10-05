@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.1.0 – 2026-10-04
+
+- New skill `webinar-archive-mining`: searches old webinars for the segments that answer an angle
+  you supply, then routes clips and one blog post per webinar. It passes `createdAfterDate` on
+  every search, because `search_recording_transcripts_exact` defaults to the last 120 days and
+  would otherwise skip the entire archive it exists to read
+- `webinar-production` now also produces the social copy for its clips (`social-asset-pack`) and a
+  blog post off the canonical edit (`transcript-to-written`)
+- `customer-interview-engine` reordered: the case study, quotes and clip shortlist are drafted
+  first and the skill's last output is the approval email carrying that exact material. Clearance
+  is now enforced at the publish boundary instead of before drafting, so nothing reaches a
+  platform without the saved written reply
+- 17 skills
+
 ## 1.0.0 – 2026-09-23
 
 First release.
